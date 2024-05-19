@@ -1,20 +1,69 @@
-// GameEngine.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "Sprite.h"
+#include <conio.h> // for _kbhit() and _getch()
+#include <windows.h>
 
-#include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+// Function to hide the cursor
+void hideCursor() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
+
+    GetConsoleCursorInfo(hConsole, &cursorInfo);
+    cursorInfo.bVisible = FALSE; // set the cursor visibility to false
+    SetConsoleCursorInfo(hConsole, &cursorInfo);
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+// Function to show the cursor
+void showCursor() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursorInfo;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    GetConsoleCursorInfo(hConsole, &cursorInfo);
+    cursorInfo.bVisible = TRUE; // set the cursor visibility to true
+    SetConsoleCursorInfo(hConsole, &cursorInfo);
+}
+
+int main() {
+
+    hideCursor();
+
+    // Create a 2x2 sprite
+    Sprite sprite(2, 2);
+    sprite.setPixel(0, 0, '#');
+    sprite.setPixel(1, 0, '#');
+    sprite.setPixel(0, 1, '#');
+    sprite.setPixel(1, 1, '#');
+
+    int x = 0, y = 0;
+    sprite.moveTo(x, y);
+
+    bool running = true;
+    while (running) {
+        if (_kbhit()) {
+            char ch = _getch();
+            switch (ch) {
+            case 'w': // move up
+                y = (y > 0) ? y - 1 : y;
+                break;
+            case 's': // move down
+                y = (y < 24) ? y + 1 : y; // assuming console height is 25
+                break;
+            case 'a': // move left
+                x = (x > 0) ? x - 1 : x;
+                break;
+            case 'd': // move right
+                x = (x < 78) ? x + 1 : x; // assuming console width is 80
+                break;
+            case 'q': // quit
+                running = false;
+                break;
+            default:
+                break;
+            }
+            sprite.moveTo(x, y);
+        }
+        Sleep(50); // delay to reduce CPU usage
+    }
+    showCursor();
+    return 0;
+}
