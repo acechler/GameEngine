@@ -63,3 +63,8 @@ void Sprite::clear() const
 		}
 	}
 }
+
+COORD Sprite::getPosition() const
+{
+	return this->position;
+}

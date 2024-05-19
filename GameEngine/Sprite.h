@@ -24,6 +24,8 @@ public:
 
 	void clear() const;
 
+	COORD getPosition() const;
+
 private:
 	std::vector<std::vector<char>> pixels;
 	COORD position;
