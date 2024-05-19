@@ -91,18 +91,16 @@ int main() {
 
     // Create actors
     Actor player1("Player1", sprite1);
-    Actor player2("Player2", sprite2);
     Actor chaser("Chaser", spriteChaser);
 
-    std::vector<Actor> actors = { player1, player2, chaser };
+    std::vector<Actor> actors = { player1, chaser };
 
     // Initial positions
     int x1 = 0, y1 = 0;
-    int x2 = 10, y2 = 10;
-    int xChaser = 20, yChaser = 20;
+    int xChaser = 40, yChaser = 24;
 
     player1.getSprite().moveTo(x1, y1);
-    player2.getSprite().moveTo(x2, y2);
+
     chaser.getSprite().moveTo(xChaser, yChaser);
 
     bool running = true;
@@ -122,18 +120,6 @@ int main() {
             case 'd': // move player1 right
                 x1 = (x1 < 78) ? x1 + 1 : x1; // assuming console width is 80
                 break;
-            case 'i': // move player2 up
-                y2 = (y2 > 0) ? y2 - 1 : y2;
-                break;
-            case 'k': // move player2 down
-                y2 = (y2 < 24) ? y2 + 1 : y2; // assuming console height is 25
-                break;
-            case 'j': // move player2 left
-                x2 = (x2 > 0) ? x2 - 1 : x2;
-                break;
-            case 'l': // move player2 right
-                x2 = (x2 < 78) ? x2 + 1 : x2; // assuming console width is 80
-                break;
             case 'q': // quit
                 running = false;
                 break;
@@ -146,7 +132,7 @@ int main() {
 
             // Update positions
             player1.getSprite().moveTo(x1, y1);
-            player2.getSprite().moveTo(x2, y2);
+         
 
             // Move chaser towards player1
             moveChaser(chaser, x1, y1);
