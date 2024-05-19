@@ -5,8 +5,6 @@
 #include<string>
 
 
-
-
 class Actor
 {
 public:
