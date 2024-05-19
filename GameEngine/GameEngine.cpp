@@ -1,7 +1,7 @@
 #include "Sprite.h"
-#include <conio.h> // for _kbhit() and _getch()
+#include "Actor.h"
+#include <conio.h>
 #include <windows.h>
-
 
 // Function to hide the cursor
 void hideCursor() {
@@ -24,7 +24,6 @@ void showCursor() {
 }
 
 int main() {
-
     hideCursor();
 
     // Create a 2x2 sprite
@@ -34,8 +33,11 @@ int main() {
     sprite.setPixel(0, 1, '#');
     sprite.setPixel(1, 1, '#');
 
+    // Create an actor with the sprite
+    Actor player("player", sprite);
+
     int x = 0, y = 0;
-    sprite.moveTo(x, y);
+    player.getSprite().moveTo(x, y);
 
     bool running = true;
     while (running) {
@@ -46,13 +48,13 @@ int main() {
                 y = (y > 0) ? y - 1 : y;
                 break;
             case 's': // move down
-                y = (y < 24) ? y + 1 : y; // assuming console height is 25
+                y = (y < 24) ? y + 1 : y; 
                 break;
             case 'a': // move left
                 x = (x > 0) ? x - 1 : x;
                 break;
             case 'd': // move right
-                x = (x < 78) ? x + 1 : x; // assuming console width is 80
+                x = (x < 78) ? x + 1 : x; 
                 break;
             case 'q': // quit
                 running = false;
@@ -60,10 +62,11 @@ int main() {
             default:
                 break;
             }
-            sprite.moveTo(x, y);
+            player.getSprite().moveTo(x, y);
         }
         Sleep(50); // delay to reduce CPU usage
     }
+
     showCursor();
     return 0;
 }
