@@ -4,6 +4,7 @@
 #include<vector>
 #include<string>
 #include<iostream>
+#include<windows.h>
 
 class Sprite
 {
@@ -19,8 +20,13 @@ public:
 
 	void fill(char fill);
 
+	void moveTo(int x, int y);
+
+	void clear() const;
+
 private:
 	std::vector<std::vector<char>> pixels;
+	COORD position;
 };
 
 

@@ -3,6 +3,7 @@
 Sprite::Sprite(int width, int height, char fill)
 {
 	pixels.resize(height, std::vector<char>(width, fill));
+	position = { 0,0 };
 }
 
 Sprite::~Sprite()
@@ -26,12 +27,13 @@ char Sprite::getPixel(int x, int y) const
 
 void Sprite::draw() const
 {
-	// SetCursorPosition
-	for (const auto& row : pixels) {
-		for (const auto& pixel : row) {
-			std::cout << pixel;
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (int y = 0; y < pixels.size(); ++y) {
+		for (int x = 0; x < pixels[y].size(); ++x) {
+			COORD coord = { position.X + x, position.Y + y };
+			SetConsoleCursorPosition(hConsole, coord);
+			std::cout << pixels[y][x];
 		}
-		std::cout << std::endl;
 	}
 }
 
@@ -39,5 +41,25 @@ void Sprite::fill(char fill)
 {
 	for (auto& row : pixels) {
 		std::fill(row.begin(), row.end(), fill);
+	}
+}
+
+void Sprite::moveTo(int x, int y)
+{
+	clear();
+	position.X = x;
+	position.Y = y;
+	draw();
+}
+
+void Sprite::clear() const
+{
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	for (int y = 0; y < pixels.size(); ++y) {
+		for (int x = 0; x < pixels[y].size(); ++x) {
+			COORD coord = { position.X + x, position.Y + y };
+			SetConsoleCursorPosition(hConsole, coord);
+			std::cout << ' ';
+		}
 	}
 }
